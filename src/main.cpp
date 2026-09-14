@@ -2,7 +2,7 @@
 // Created by Mateusz M on 08/06/2026.
 //
 
-#include "../../JSON_Parser/include/JsonParserLib/JSON_Parser.hpp"
+#include "../include/JsonParserLib/JSON_Parser.hpp"
 #include "../include/GraphLib/ListGraph.hpp"
 #include <iostream>
 
