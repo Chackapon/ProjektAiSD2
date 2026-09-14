@@ -1,4 +1,4 @@
-CXX = g++-15
+CXX = g++
 CXXFLAGS = -std=c++23 -Iinclude -fPIC -Wall
 # Iinclude - allows to get rid of relative paths in includes
 
