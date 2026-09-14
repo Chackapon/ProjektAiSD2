@@ -9,24 +9,58 @@
 #include <list>
 #include <algorithm>
 #include <set>
+#include <variant>
 
 #include "BaseGraph.hpp"
 #include "HelperFunctions.hpp"
 #include "GraphExceptions.hpp"
 
+#include "../GraphBuilder.hpp"
+#include "../JsonParserLib/JSON_Parser.hpp"
+
 
 //region ===================== CLASS =====================
 template <typename T>
 class ListGraph final : public BaseGraph<T> { // wersja5c
-    bool directed;
+    bool directed{};
     std::unordered_map<T, std::list<Edge<T> *> > adj_list; // lista sąsiedztwa
-    //std::unordered_map<T, std::vector<Edge<T> *> > adj_list; // lista sąsiedztwa
+
 
 public:
     explicit ListGraph(const bool directed=false) : directed(directed) {}
     explicit ListGraph(std::set<T> nodes, const bool directed=false) : directed(directed) {
         for (auto node : nodes) this->add_node(node);
     }
+    explicit ListGraph( const json::JSON_Parser& json_tree ) {
+        if ( json_tree.has("@build") ) {
+            auto build_node = json_tree["@build"];
+            auto c = GraphBuilder<T>( json_tree );
+
+            if ( build_node.has("@nodes") ) {
+
+                for ( auto instruction : build_node["@nodes"].as_list<std::string>() ) {
+                    c.addInstruction( instruction );
+                }
+                c.retrieve(NODE);
+                DEBUG_LOG( str(c.nodes_result) )
+            }
+
+            if ( build_node.has("@edges") ) {
+
+                int value_instr_ctr = 0;
+                for ( auto instruction : build_node["@edges"].as_list<std::string>() ) {
+                    c.addInstruction( instruction );
+                    ++value_instr_ctr;
+                }
+                c.retrieve(EDGE, (value_instr_ctr>2) );
+                DEBUG_LOG( str(c.edge_result) )
+            }
+
+        }
+        else throw std::runtime_error("This json doesn't include building instructions for a graph");
+    }
+
+    
     ~ListGraph() override { clear(); } // trzeba zwolnić pamięć krawędzi
 
     //region ===================== GRAPH =====================
@@ -166,19 +200,20 @@ public:
     std::string graph_implementation() const override { return "ListGraph"; }
     // TODO redo using nodes() and adjacents()
     std::string nodes_to_json() const override { // FIXME intended to be private
-        std::string result;
-        for (auto root : adj_list) {
-            result += "\"" + std::to_string(root.first) + "\":{";
-            for (const auto &neighbor : root.second) {
-                if (neighbor != nullptr) {
-                    result += "\"" + std::to_string(neighbor->target) + "\":" + std::to_string(neighbor->weight) + ",";
-                }
-            }
-            if (!result.empty() && result.back() == ',') result.pop_back();
-            result += "},";
-        }
-        if (!result.empty() && result.back() == ',') result.pop_back();
-        return result;
+        // std::string result;
+        // for (auto root : adj_list) {
+        //     result += "\"" + std::to_string(root.first) + "\":{";
+        //     for (const auto &neighbor : root.second) {
+        //         if (neighbor != nullptr) {
+        //             result += "\"" + std::to_string(neighbor->target) + "\":" + std::to_string(neighbor->weight) + ",";
+        //         }
+        //     }
+        //     if (!result.empty() && result.back() == ',') result.pop_back();
+        //     result += "},";
+        // }
+        // if (!result.empty() && result.back() == ',') result.pop_back();
+        // return result;
+        return "";
     }
     //endregion
 
@@ -301,7 +336,7 @@ public:
                 std::list< Edge<T>* > source_edges;
                 int edge_idx;
                 public:
-                explicit AdjacentIterator(ListGraph<T>* graph, T node, const int idx = 0) : graph(graph), source(node), edge_idx(idx) {
+                explicit AdjacentIterator(ListGraph* graph, T node, const int idx = 0) : graph(graph), source(node), edge_idx(idx) {
                     //std::unordered_map<T, std::list<Edge<T> *> > adj_list; // lista sąsiedztwa
                     auto it = graph->adj_list.find( source );
                     assert( it != graph->adj_list.end() );

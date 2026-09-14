@@ -1,5 +1,5 @@
 {
-  "directed": true,
+  "directed": false,
   "multigraph": false,
   "nodes": [ {"id": "A"}, {"id": "B"}, {"id": "C"}],
   "edges": [

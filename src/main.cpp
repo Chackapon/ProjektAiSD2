@@ -11,7 +11,7 @@
 using namespace json;
 
 template <typename T>
-ListGraph<T> buildGraph( const std::string& file_name) {
+ListGraph<T> buildGraph1( const std::string& file_name) {
 
     // Initialize the parser
     auto parser = JSON_Parser(true);
@@ -41,8 +41,39 @@ ListGraph<T> buildGraph( const std::string& file_name) {
     return result;
 }
 
+/*
+template <typename T>
+ListGraph<T> buildGraph2( const std::string& file_name) {
+
+    // Initialize the parser
+    auto parser = JSON_Parser(true);
+    parser.setDirectory("json");
+    parser.importFile( file_name );
+    parser.parse();
+
+    bool directed = parser["graph"]["directed"].as<bool>();
+    auto result = ListGraph<T>(directed);
+
+    // Add nodes
+    const auto nodes = std::set<std::string>();
+    for ( auto entry : parser["graph"]["content"].keys() ) {
+        auto str_node = get<std::string>(entry);
+        // nodes.insert( str_node );
+        result.add_node( str_node );
+    }
+
+    for ( auto source : parser["graph"]["content"].keys() ) {
+        for ( auto target_entry: parser["graph"]["content"][get<std::string>(source).c_str()].keys() ) {
+            auto str_target = get<std::string>(target_entry);
+            result.add_edge(get<std::string>(source), str_target, parser["graph"]["content"][get<std::string>(source).c_str()][str_target.c_str()].as<float>());
+        }
+    }
+
+    return result;
+}
+*/
 
 int main() {
-    buildGraph<std::string>( "Graph.json" ).display();
+    buildGraph1<std::string>( "Graph.json" ).display();
     return 0;
 }
