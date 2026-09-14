@@ -10,8 +10,8 @@
 #include <list>
 #include <set>
 #include <stack>
-#include "../../Algosy2Grafy/include/HelperFunctions.hpp"
-#include "../../Algosy2Grafy/include/Edge.hpp"
+#include "../include/GraphLib/HelperFunctions.hpp"
+#include "../include/GraphLib/Edge.hpp"
 
 enum retrieve_mode {EDGE, NODE};
 template <typename T>
