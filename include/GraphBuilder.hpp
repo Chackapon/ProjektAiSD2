@@ -10,6 +10,7 @@
 #include <list>
 #include <set>
 #include <stack>
+#include <ranges>
 #include "../include/GraphLib/HelperFunctions.hpp"
 #include "../include/GraphLib/Edge.hpp"
 
@@ -113,8 +114,8 @@ public:
                 }
 
                 else if ( instruction == "@keys" ) {
-                    for (const auto key: current_node->children | std::views::keys) {
-                        this->nodes_result.insert( get<std::string>(key) ); // string cus keys in dicts are only string
+                    for (const auto& key: current_node->children | std::views::keys) {
+                        this->nodes_result.insert( std::get<std::string>(key) ); // string cus keys in dicts are only string
                     }
                 }
 
@@ -123,11 +124,11 @@ public:
 
                     if ( mode == EDGE ) {
                         if (found_source == false and found_target == false) {
-                            source = get<T>(current_node->node_value.value);
+                            source = std::get<T>(current_node->node_value.value);
                             found_source = true;
                         }
                         else if ( found_target == false ) {
-                            target = get<T>(current_node->node_value.value);
+                            target = std::get<T>(current_node->node_value.value);
                             found_target = true;
                             found_source = false;
                             // DEBUG_LOG(std::format("# EDGE {}->{}", source, target));
@@ -136,13 +137,13 @@ public:
                         else {
                             // DEBUG_LOG( current_node->node_value.as_str )
                             if (weighed) {
-                                this->edge_result.insert( new Edge<T>(source, target, get<float>(current_node->node_value.value)) );
+                                this->edge_result.insert( new Edge<T>(source, target, std::get<float>(current_node->node_value.value)) );
                                 found_target = false;
                             }
                         }
                     }
                     else {
-                        this->nodes_result.insert( get<T>(current_node->node_value.value) );
+                        this->nodes_result.insert( std::get<T>(current_node->node_value.value) );
                     }
                     current_node = previous_node;
 

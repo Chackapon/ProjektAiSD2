@@ -1,5 +1,13 @@
-CXX = g++
+KERNEL_NAME := $(shell uname -s)
+ifeq ($(KERNEL_NAME),Darwin)
+    CXX = g++-15
+else
+    CXX = g++
+endif
+
 CXXFLAGS = -std=c++23 -Iinclude -fPIC -Wall
+
+
 # Iinclude - allows to get rid of relative paths in includes
 
 LIB_NAME = libjsonparser.dylib
