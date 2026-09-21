@@ -1,26 +1,25 @@
 KERNEL_NAME := $(shell uname -s)
+
 ifeq ($(KERNEL_NAME),Darwin)
     CXX = g++-15
+    LIB_NAME = libjsonparser.dylib
+    RPATH = @executable_path/../shared
 else
     CXX = g++
+    LIB_NAME = libjsonparser.so
+    RPATH = \$$ORIGIN/../shared
 endif
 
 CXXFLAGS = -std=c++23 -Iinclude -fPIC -Wall
 
-
-# Iinclude - allows to get rid of relative paths in includes
-
-LIB_NAME = libjsonparser.dylib
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
 app: src/main.cpp
 	mkdir -p exe
-	$(CXX) $(CXXFLAGS) -Lshared -ljsonparser -Wl,-rpath,@executable_path -o exe/app.x src/main.cpp
+	$(CXX) $(CXXFLAGS) -o exe/app.x src/main.cpp \
+		-Lshared -ljsonparser \
+		-Wl,-rpath,$(RPATH)
 
 run: app
 	./exe/app.x
 
 clean:
-	rm -f *.dylib *.o
+	rm -f *.o exe/app.x
