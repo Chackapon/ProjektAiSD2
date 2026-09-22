@@ -1,8 +1,15 @@
 KERNEL_NAME := $(shell uname -s)
+
 ifeq ($(KERNEL_NAME),Darwin)
     CXX = g++-15
-else
+    LIB_NAME = libjsonparser.dylib
+    RPATH = -Wl,-rpath,@executable_path
+else ifeq ($(KERNEL_NAME),Linux)
     CXX = g++
+    LIB_NAME = libjsonparser.so
+    RPATH = -Wl,-rpath,'$$ORIGIN'
+else
+    $(error Unsupported OS: $(KERNEL_NAME))
 endif
 
 CXXFLAGS = -std=c++23 -Iinclude -fPIC -Wall
