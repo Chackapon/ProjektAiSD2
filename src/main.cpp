@@ -74,6 +74,12 @@ ListGraph<T> buildGraph2( const std::string& file_name) {
 */
 
 int main() {
-    buildGraph1<std::string>( "Graph.json" ).display();
+    std::string filename = "Graph.json";
+
+    std::cout << "> Parsowanie grafu zapisanego w pliku " << filename << ":" << std::endl;
+    auto graph = buildGraph1<std::string>( filename );
+
+    std::cout << "\n> Zawartosc grafa zapisanego w pliku" << filename << ":" << std::endl;
+    graph.display();
     return 0;
 }
