@@ -1,11 +1,11 @@
-name: Linux
+name: Test on Ubuntu
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    name: Test on Linux
+    name: Test on Ubuntu
     runs-on: ubuntu-latest
 
     steps:
