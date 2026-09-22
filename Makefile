@@ -12,7 +12,7 @@ else
     $(error Unsupported OS: $(KERNEL_NAME))
 endif
 
-CXXFLAGS = -std=c++23 -Iinclude -fPIC -Wall
+CXXFLAGS = -std=c++20 -Iinclude -fPIC -Wall
 
 
 # Iinclude - allows to get rid of relative paths in includes
