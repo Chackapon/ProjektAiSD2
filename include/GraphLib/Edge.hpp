@@ -5,7 +5,7 @@
 #ifndef ALGOSY2GRAFY_EDGE_H
 #define ALGOSY2GRAFY_EDGE_H
 
-#include <format>
+// #include <format>
 #include <iostream>
 
 // edge.hpp
@@ -33,7 +33,7 @@ public:
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Edge<T>& edge) {
-    os << std::format("Edge({}->{}:{})", edge.source, edge.target, edge.weight);
+    os << "Edge(" << edge.source << "->" << edge.target << ":" <<  edge.weight << ")";
     return os;
 }
 
