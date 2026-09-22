@@ -21,6 +21,14 @@ jobs:
         run: |
           make clean
           CXX=g++ make
+          
+      - name: Inspect library
+        run: |
+          ls -l shared/
+          file shared/libjsonparser.so
+          nm -C shared/libjsonparser.so | grep 'JSON_Parser'
+          nm -C shared/libjsonparser.so | grep 'JSON_Node::operator'
+          nm -C shared/libjsonparser.so | grep 'JSON_Value::JSON_Value'
 
       - name: Run
         run: |

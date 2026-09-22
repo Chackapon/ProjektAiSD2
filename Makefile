@@ -30,4 +30,4 @@ run: app
 	./exe/app.x
 
 clean:
-	rm -f *.dylib *.o
+	rm -f *.o
