@@ -48,9 +48,9 @@ public:
 
         while ( !this->instructions_list.empty() ) {
 
-            DEBUG_LOG(std::format("\n@CURRENT NODE val={} type={}", current_node->node_value.as_str, json::type_map[current_node->node_value.type]))
-            DEBUG_LOG(std::format("@INSTRUCTIONS LEFT: {}", this->instructions_list.size()))
-            DEBUG_LOG(std::format("@INSTRUCTIONS QUEUE: {}", str(this->instructions_list)))
+            // DEBUG_LOG(std::format("\n@CURRENT NODE val={} type={}", current_node->node_value.as_str, json::type_map[current_node->node_value.type]))
+            // DEBUG_LOG(std::format("@INSTRUCTIONS LEFT: {}", this->instructions_list.size()))
+            // DEBUG_LOG(std::format("@INSTRUCTIONS QUEUE: {}", str(this->instructions_list)))
             DEBUG_LOG( "#Current node: " << current_node )
             DEBUG_LOG( "#Previous node: " << previous_node )
                         std::cout << "#Current node stack: ";

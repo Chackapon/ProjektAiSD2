@@ -30,6 +30,7 @@ namespace json {
     struct JSON_Null {};
 
     enum json_value_type {INTEGER, FLOAT, BOOLEAN, STRING, NULL_TYPE, DICT_TYPE, ARR_TYPE, UNDEFINED};
+
     inline std::map<json_value_type, std::string> type_map {
                 { UNDEFINED, "undefined" },
                 { STRING, "str" },
@@ -45,6 +46,7 @@ namespace json {
     using json_key_datatype = std::variant< int, std::string >;
 
     enum state {CURIOUS, END, DICT_OPENED, DICT_CLOSED, DICTIONARY, ARR_OPENED, ARR_CLOSED, ARRAY, KEY, VALUE};
+
     inline std::map<state, std::string> state_names {
             {VALUE, "value"},
             {KEY, "key"},

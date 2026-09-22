@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <vector>
 #include <cassert>
+#include <variant>
 
 
 #include "JSON_Exceptions.hpp"
@@ -46,11 +47,11 @@ namespace json {
             auto result = std::set<json_key_datatype>();
             if ( is_dictionary_v )
                 for ( const auto& [key, value] : this->children ) {
-                    result.insert( get<std::string>(key) );
+                    result.insert( std::get<std::string>(key) );
                 }
             else if ( is_array_v )
                 for ( const auto& [key, value] : this->children ) {
-                    result.insert( get<int>(key) );
+                    result.insert( std::get<int>(key) );
                 }
             else throw NotSubscribtable();
             return result;
@@ -65,7 +66,7 @@ namespace json {
         T as() {
             if ( is_primitive_v) {
                 try {
-                    return get<T>( this->node_value.value );
+                    return std::get<T>( this->node_value.value );
                 } catch ( std::bad_variant_access& ) {
                     throw std::runtime_error("Value being accessed is of type " + type_map[this->node_value.type]);
                 }
